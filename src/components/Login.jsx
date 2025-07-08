@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -13,7 +15,6 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Call backend login API
       const response = await axios.post('http://localhost:9199/auth/login', {
         username,
         password
@@ -21,17 +22,25 @@ const Login = () => {
 
       const token = response.data;
 
-      // Save token to localStorage
       localStorage.setItem('token', token);
 
-      console.log('Login successful, token:', token);
+      toast.success('Login successful!', {
+        position: 'top-center',
+        autoClose: 500,
+      });
 
-      // Navigate to homepage / dashboard
-      navigate('/take-quiz'); // change this to your home route
+      // Delay navigation to allow toast to display
+      setTimeout(() => {
+        navigate('/take-quiz');
+      }, 1000);
 
     } catch (err) {
       console.error('Login failed:', err.response?.data || err.message);
       setError('Invalid username or password!');
+      toast.error('Invalid username or password!', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
     }
   };
 
@@ -44,7 +53,8 @@ const Login = () => {
         paddingTop: '60px',
       }}
     >
-      {/* Top Header */}
+      <ToastContainer />
+
       <header className="text-center mb-5">
         <h1 className="fw-bold text-white">Welcome Back to Quizora</h1>
         <p className="text-white-50 fs-5">Please login to continue</p>
@@ -93,7 +103,7 @@ const Login = () => {
               Login
             </button>
 
-            {/* Show error message */}
+            {/* Optional inline error message (can be removed if using toast only) */}
             {error && (
               <div className="alert alert-danger mt-3 text-center" role="alert">
                 {error}

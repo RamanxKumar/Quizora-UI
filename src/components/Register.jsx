@@ -7,13 +7,11 @@ const Register = () => {
     username: '',
     email: '',
     phone: '',
-    password: '',
-    role:'role_admin'
+    password: ''
   });
 
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -43,12 +41,15 @@ const Register = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        // Call backend register API
-        await axios.post('http://localhost:9199/auth/register', formData);
+        // Role logic based on username
+        const adjustedData = {
+          ...formData,
+          role: formData.username.trim().toLowerCase() === 'quizoraa' ? 'ROLE_ADMIN' : 'ROLE_USER'
+        };
+
+        await axios.post('http://localhost:9199/auth/register', adjustedData);
 
         console.log('Registration successful!');
-
-        // Redirect to login page
         navigate('/login');
       } catch (err) {
         console.error('Registration failed:', err.response?.data || err.message);
@@ -140,7 +141,6 @@ const Register = () => {
               Register
             </button>
 
-            {/* Show server error */}
             {serverError && (
               <div className="alert alert-danger mt-3 text-center" role="alert">
                 {serverError}

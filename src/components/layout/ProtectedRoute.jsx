@@ -1,15 +1,16 @@
+// src/utils/PrivateRoute.jsx
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
+const PrivateRoute = ({ element: Component, allowedRoles }) => {
   const token = localStorage.getItem("token");
+  const user = token ? JSON.parse(atob(token.split('.')[1])) : null;
 
-  if (!token) {
-    // Agar token nahi mila to login pe redirect
-    return <Navigate to="/login" replace />;
+  if (!token || !user || !allowedRoles.includes(user.role)) {
+    return <Navigate to="/login" />;
   }
 
-  return children;
+  return <Component />;
 };
 
-export default ProtectedRoute;
+export default PrivateRoute;
