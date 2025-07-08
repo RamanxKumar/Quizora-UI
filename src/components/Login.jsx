@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:9199/auth/login', {
+      const response = await axios.post('https://quizora-server-production-4047.up.railway.app/auth/login', {
         username,
         password
       });

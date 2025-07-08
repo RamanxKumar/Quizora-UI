@@ -47,7 +47,7 @@ const Register = () => {
           role: formData.username.trim().toLowerCase() === 'quizoraa' ? 'ROLE_ADMIN' : 'ROLE_USER'
         };
 
-        await axios.post('http://localhost:9199/auth/register', adjustedData);
+        await axios.post('https://quizora-server-production-4047.up.railway.app/auth/register', adjustedData);
 
         console.log('Registration successful!');
         navigate('/login');
