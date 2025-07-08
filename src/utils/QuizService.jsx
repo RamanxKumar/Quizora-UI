@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 📍 Base URL for API
-const BASE_URL = "http://localhost:9199/api/quizzes";
+const BASE_URL = "http://quizora-server-production-4047.up.railway.app/api/quizzes";
 
 // 👉 Public API client (no token)
 export const api = axios.create({
